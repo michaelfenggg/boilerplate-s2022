@@ -23,6 +23,8 @@ import ResetPasswordPage from './Authentication/ResetPasswordPage';
 import AlertPopup from './components/AlertPopup';
 import InviteRegisterPage from './Authentication/InviteRegisterPage';
 
+import Project from './Project';
+
 function App() {
   return (
     <div className="App">
@@ -72,6 +74,7 @@ function App() {
 
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
+                  <Route path="/project" element={<Project />} />
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
