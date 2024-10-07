@@ -24,6 +24,7 @@ import AlertPopup from './components/AlertPopup';
 import InviteRegisterPage from './Authentication/InviteRegisterPage';
 
 import Project from './Project';
+import Profile from './Profile';
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
                   {/* Route which is accessed if no other route is matched */}
                   <Route path="*" element={<NotFoundPage />} />
                   <Route path="/project" element={<Project />} />
+                  <Route path="/profiles/:name" element={<Profile />} />
                 </Routes>
               </CssBaseline>
             </ThemeProvider>
