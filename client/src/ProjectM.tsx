@@ -93,21 +93,6 @@ function Project() {
 //   );
 // }
 
-<<<<<<< HEAD
-// function getProfiles() {
-//   return profiles.map((profile, index) => (
-//     <div className="profile_card" key="index">
-//       <img className="profile_img" src={profile.imgURL} />
-//       <h3>{profile.name}</h3>
-//       <p>{profile.description}</p>
-//       <Stack direction="row" spacing={1}>
-//         <Chip icon={<SchoolIcon />} label={profile.school} color="info" />
-//         <Chip label={profile.gradYear} color="secondary" />
-//       </Stack>
-//     </div>
-//   ));
-// }
-=======
 function getProfiles() {
   return profiles.map((profile, index) => (
     <div className="profile_card" key="index">
@@ -121,6 +106,5 @@ function getProfiles() {
     </div>
   ));
 }
->>>>>>> 56db2e908f3076e4d2beab8f47d2a0246e9f5695
 
 export default Project;
