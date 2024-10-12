@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Defines the User model for the database and also the interface to
  * access the model in TypeScript.
