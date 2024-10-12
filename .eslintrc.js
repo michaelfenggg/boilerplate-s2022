@@ -7,7 +7,10 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: true,
+        devDependencies: true, // Allow devDependencies
+        optionalDependencies: false,
+        peerDependencies: false,
+        dependencies: true,
       },
     ],
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
