@@ -18,7 +18,7 @@ interface Profile {
 
 const profiles: Profile[] = [
   {
-    name: 'Michael',
+    name: 'Michaelv2',
     imgURL: MichaelImage,
     description: "Michael's toxic traits",
     school: 'SEAS/Wharton',
