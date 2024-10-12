@@ -22,6 +22,13 @@ const profiles = [
     description: "Michael's toxic traits",
     school: 'SEAS/Wharton',
     gradYear: '2028',
+    traitsList: [
+      'will eat more than half your food if you split it with me!',
+      'might fuck up your hair if you come for a haircut',
+      "be a bitch when i'm hungry",
+      'will not put things in my calendar',
+      'will not wake up before 12pm',
+    ],
   },
   {
     name: 'Izzy',
@@ -30,6 +37,13 @@ const profiles = [
     description: "Izzy's toxic traits",
     school: 'SEAS',
     gradYear: '2027',
+    traitsList: [
+      'is allergic to everything',
+      'will fall asleep when watching movies',
+      'enjoys climbing like all engineering majors',
+      "doesn't have music taste",
+      'likes commons food (occasionally)',
+    ],
   },
   {
     name: 'Lihini',
@@ -38,6 +52,13 @@ const profiles = [
     description: "Lihini's toxic traits",
     school: 'SEAS',
     gradYear: '2028',
+    traitsList: [
+      'split ends',
+      'actually enjoys bojack horseman',
+      'closeted celiac',
+      'in an improv group',
+      'always cold',
+    ],
   },
 ];
 
@@ -72,18 +93,18 @@ function Project() {
 //   );
 // }
 
-function getProfiles() {
-  return profiles.map((profile, index) => (
-    <div className="profile_card" key="index">
-      <img className="profile_img" src={profile.imgURL} />
-      <h3>{profile.name}</h3>
-      <p>{profile.description}</p>
-      <Stack direction="row" spacing={1}>
-        <Chip icon={<SchoolIcon />} label={profile.school} color="info" />
-        <Chip label={profile.gradYear} color="secondary" />
-      </Stack>
-    </div>
-  ));
-}
+// function getProfiles() {
+//   return profiles.map((profile, index) => (
+//     <div className="profile_card" key="index">
+//       <img className="profile_img" src={profile.imgURL} />
+//       <h3>{profile.name}</h3>
+//       <p>{profile.description}</p>
+//       <Stack direction="row" spacing={1}>
+//         <Chip icon={<SchoolIcon />} label={profile.school} color="info" />
+//         <Chip label={profile.gradYear} color="secondary" />
+//       </Stack>
+//     </div>
+//   ));
+// }
 
 export default Project;

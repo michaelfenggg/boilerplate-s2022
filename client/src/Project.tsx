@@ -1,24 +1,23 @@
 import React from 'react';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import { Chip, Stack, Card, CardContent, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import SchoolIcon from '@mui/icons-material/School';
+import MichaelImage from './imgs/MichaelImage.jpg';
+import IzzyImage from './imgs/IzzyImage.png';
+import LihiniImage from './imgs/LihiniImage.jpg';
 
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
-import { lightBlue } from '@mui/material/colors';
+interface Profile {
+  name: string;
+  imgURL: string;
+  description: string;
+  school: string;
+  gradYear: string;
+  traitsList: string[];
+}
 
-import { TextField, Typography, Grid } from '@mui/material';
-
-/* List of profile information: */
-
-/* MICHAEL - For the chips, look into incorporating it into the getProfiles() function +
-  adding the chip info for each person into the profiles list */
-const profiles = [
+const profiles: Profile[] = [
   {
     name: 'Michael',
-    imgURL:
-      'https://www.google.com/imgres?q=stonks&imgurl=https%3A%2F%2Fcompote.slate.com%2Fimages%2F926e5009-c10a-48fe-b90e-fa0760f82fcd.png%3Fcrop%3D680%252C453%252Cx0%252Cy0&imgrefurl=https%3A%2F%2Fslate.com%2Fbusiness%2F2021%2F01%2Fstonks-not-stocks-got-it.html&docid=QqB3e8yppKhc2M&tbnid=hqSdxqwaUXHnCM&vet=12ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA..i&w=680&h=453&hcb=2&ved=2ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA',
+    imgURL: MichaelImage,
     description: "Michael's toxic traits",
     school: 'SEAS/Wharton',
     gradYear: '2028',
@@ -32,8 +31,7 @@ const profiles = [
   },
   {
     name: 'Izzy',
-    imgURL:
-      'https://www.google.com/imgres?q=stonks&imgurl=https%3A%2F%2Fcompote.slate.com%2Fimages%2F926e5009-c10a-48fe-b90e-fa0760f82fcd.png%3Fcrop%3D680%252C453%252Cx0%252Cy0&imgrefurl=https%3A%2F%2Fslate.com%2Fbusiness%2F2021%2F01%2Fstonks-not-stocks-got-it.html&docid=QqB3e8yppKhc2M&tbnid=hqSdxqwaUXHnCM&vet=12ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA..i&w=680&h=453&hcb=2&ved=2ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA',
+    imgURL: IzzyImage,
     description: "Izzy's toxic traits",
     school: 'SEAS',
     gradYear: '2027',
@@ -47,8 +45,7 @@ const profiles = [
   },
   {
     name: 'Lihini',
-    imgURL:
-      'https://www.google.com/imgres?q=stonks&imgurl=https%3A%2F%2Fcompote.slate.com%2Fimages%2F926e5009-c10a-48fe-b90e-fa0760f82fcd.png%3Fcrop%3D680%252C453%252Cx0%252Cy0&imgrefurl=https%3A%2F%2Fslate.com%2Fbusiness%2F2021%2F01%2Fstonks-not-stocks-got-it.html&docid=QqB3e8yppKhc2M&tbnid=hqSdxqwaUXHnCM&vet=12ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA..i&w=680&h=453&hcb=2&ved=2ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA',
+    imgURL: LihiniImage,
     description: "Lihini's toxic traits",
     school: 'SEAS',
     gradYear: '2028',
@@ -62,49 +59,56 @@ const profiles = [
   },
 ];
 
+function ProfileCard({ profile }: { profile: Profile }) {
+  return (
+    <Link
+      to={`/profiles/${profile.name}`}
+      state={{ profile }}
+      style={{ textDecoration: 'none' }}
+    >
+      <Card sx={{ maxWidth: 200, margin: 2, cursor: 'pointer' }}>
+        <img
+          src={profile.imgURL}
+          alt={profile.name}
+          style={{
+            width: '100%',
+            height: 150,
+            objectFit: 'cover',
+            borderRadius: '10px',
+          }}
+        />
+        <CardContent>
+          <Typography variant="h6" component="div">
+            {profile.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {profile.description}
+          </Typography>
+          <Stack direction="row" spacing={1} justifyContent="center" mt={1}>
+            <Chip label={profile.school} color="primary" />
+            <Chip label={profile.gradYear} color="secondary" />
+          </Stack>
+        </CardContent>
+      </Card>
+    </Link>
+  );
+}
+
 function Project() {
   return (
-    <div>
-      <Typography variant="h2" textAlign="center">
-        Meet the Squaddd
+    <div style={{ textAlign: 'center', padding: '20px' }}>
+      <Typography variant="h4" gutterBottom>
+        Meet the Team
       </Typography>
-      <div>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}
+      >
         {profiles.map((profile) => (
-          <div key={profile.name}>
-            <Link to={`/profiles/${profile.name}`} state={{ profile }}>
-              <div style={{ cursor: 'pointer' }}>
-                <Typography variant="h6">{profile.name}</Typography>
-                <p>{profile.description}</p>
-              </div>
-            </Link>
-          </div>
+          <ProfileCard key={profile.name} profile={profile} />
         ))}
       </div>
     </div>
   );
-}
-
-// function BasicChips() {
-//   return (
-//     <Stack direction="row" spacing={1}>
-//       <Chip icon={<SchoolIcon />} label="SEAS" color="info" />
-//       <Chip label="2028" color="info" />
-//     </Stack>
-//   );
-// }
-
-function getProfiles() {
-  return profiles.map((profile, index) => (
-    <div className="profile_card" key="index">
-      <img className="profile_img" src={profile.imgURL} />
-      <h3>{profile.name}</h3>
-      <p>{profile.description}</p>
-      <Stack direction="row" spacing={1}>
-        <Chip icon={<SchoolIcon />} label={profile.school} color="info" />
-        <Chip label={profile.gradYear} color="secondary" />
-      </Stack>
-    </div>
-  ));
 }
 
 export default Project;
