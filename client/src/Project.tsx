@@ -3,7 +3,8 @@ import { Chip, Stack, Card, CardContent, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import MichaelImage from './imgs/MichaelImage.jpg';
 import IzzyImage from './imgs/izzy_pic.jpg';
-import LihiniImage from './imgs/LihiniImage.jpg';
+import LihiniImage from './imgs/LihiniImage.png';
+import './index.css';
 // import SchoolIcon from '@mui/icons-material/School';
 
 interface Profile {
@@ -67,23 +68,22 @@ function ProfileCard({ profile }: { profile: Profile }) {
       state={{ profile }}
       style={{ textDecoration: 'none' }}
     >
-      <Card sx={{ maxWidth: 200, margin: 2, cursor: 'pointer' }}>
+      <Card sx={{ maxWidth: 300, margin: 2, cursor: 'pointer', boxShadow: 3 }}>
         <img
           src={profile.imgURL}
           alt={profile.name}
           style={{
             width: '100%',
-            height: 150,
+            height: 180,
             objectFit: 'cover',
-            borderRadius: '10px',
           }}
         />
         <CardContent>
-          <Typography variant="h6" component="div">
+          <Typography variant="h6" component="div" gutterBottom>
             {profile.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {profile.description}
+            {profile.school} | Class of {profile.gradYear}
           </Typography>
           <Stack direction="row" spacing={1} justifyContent="center" mt={1}>
             <Chip label={profile.school} color="primary" />
