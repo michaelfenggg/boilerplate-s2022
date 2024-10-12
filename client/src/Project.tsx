@@ -2,7 +2,7 @@ import React from 'react';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
-import SchoolIcon from '@mui/icons-material/School';
+// import SchoolIcon from '@mui/icons-material/School';
 
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -17,8 +17,7 @@ import { TextField, Typography, Grid } from '@mui/material';
 const profiles = [
   {
     name: 'Michael',
-    imgURL:
-      'https://www.google.com/imgres?q=stonks&imgurl=https%3A%2F%2Fcompote.slate.com%2Fimages%2F926e5009-c10a-48fe-b90e-fa0760f82fcd.png%3Fcrop%3D680%252C453%252Cx0%252Cy0&imgrefurl=https%3A%2F%2Fslate.com%2Fbusiness%2F2021%2F01%2Fstonks-not-stocks-got-it.html&docid=QqB3e8yppKhc2M&tbnid=hqSdxqwaUXHnCM&vet=12ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA..i&w=680&h=453&hcb=2&ved=2ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA',
+    imgURL: './imgs/michael_pic.jpg',
     description: "Michael's toxic traits",
     school: 'SEAS/Wharton',
     gradYear: '2028',
@@ -32,8 +31,7 @@ const profiles = [
   },
   {
     name: 'Izzy',
-    imgURL:
-      'https://www.google.com/imgres?q=stonks&imgurl=https%3A%2F%2Fcompote.slate.com%2Fimages%2F926e5009-c10a-48fe-b90e-fa0760f82fcd.png%3Fcrop%3D680%252C453%252Cx0%252Cy0&imgrefurl=https%3A%2F%2Fslate.com%2Fbusiness%2F2021%2F01%2Fstonks-not-stocks-got-it.html&docid=QqB3e8yppKhc2M&tbnid=hqSdxqwaUXHnCM&vet=12ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA..i&w=680&h=453&hcb=2&ved=2ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA',
+    imgURL: './imgs/izzy_pic.png',
     description: "Izzy's toxic traits",
     school: 'SEAS',
     gradYear: '2027',
@@ -42,13 +40,12 @@ const profiles = [
       'will fall asleep when watching movies',
       'enjoys climbing like all engineering majors',
       "doesn't have music taste",
-      'likes commons food (occasionally)',
+      "can't remember birthdays",
     ],
   },
   {
     name: 'Lihini',
-    imgURL:
-      'https://www.google.com/imgres?q=stonks&imgurl=https%3A%2F%2Fcompote.slate.com%2Fimages%2F926e5009-c10a-48fe-b90e-fa0760f82fcd.png%3Fcrop%3D680%252C453%252Cx0%252Cy0&imgrefurl=https%3A%2F%2Fslate.com%2Fbusiness%2F2021%2F01%2Fstonks-not-stocks-got-it.html&docid=QqB3e8yppKhc2M&tbnid=hqSdxqwaUXHnCM&vet=12ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA..i&w=680&h=453&hcb=2&ved=2ahUKEwjUg8DEqPCIAxVuGFkFHclXGfAQM3oECBkQAA',
+    imgURL: './imgs/lihini_pic.jpg',
     description: "Lihini's toxic traits",
     school: 'SEAS',
     gradYear: '2028',
@@ -96,11 +93,11 @@ function Project() {
 function getProfiles() {
   return profiles.map((profile, index) => (
     <div className="profile_card" key="index">
-      <img className="profile_img" src={profile.imgURL} />
+      <img className="profile_img" alt="profile_image" src={profile.imgURL} />
       <h3>{profile.name}</h3>
       <p>{profile.description}</p>
       <Stack direction="row" spacing={1}>
-        <Chip icon={<SchoolIcon />} label={profile.school} color="info" />
+        {/* <Chip icon={<SchoolIcon />} label={profile.school} color="info" /> */}
         <Chip label={profile.gradYear} color="secondary" />
       </Stack>
     </div>

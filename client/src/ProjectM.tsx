@@ -2,7 +2,7 @@ import React from 'react';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
-import SchoolIcon from '@mui/icons-material/School';
+// import SchoolIcon from '@mui/icons-material/School';
 
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -75,11 +75,11 @@ function Project() {
 function getProfiles() {
   return profiles.map((profile, index) => (
     <div className="profile_card" key="index">
-      <img className="profile_img" src={profile.imgURL} />
+      {/* <img className="profile_img" src={profile.imgURL} /> */}
       <h3>{profile.name}</h3>
       <p>{profile.description}</p>
       <Stack direction="row" spacing={1}>
-        <Chip icon={<SchoolIcon />} label={profile.school} color="info" />
+        {/* <Chip icon={<SchoolIcon />} label={profile.school} color="info" /> */}
         <Chip label={profile.gradYear} color="secondary" />
       </Stack>
     </div>
