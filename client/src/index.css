@@ -9,22 +9,6 @@ body {
   justify-content: center;
 }
 
-/* .profile {
-  display: flex;
-  background-color: #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 600px; 
-  height: 300px; 
-}
-
-.profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-} */
-
 .profile-image {
   background-color: #e4c6f7; 
   display: flex;
