@@ -68,14 +68,20 @@ const initialProfiles: Profile[] = [
   },
 ];
 
-function ProfileCard({ profile }: { profile: Profile }) {
+function ProfileCard({
+  profile,
+  onDelete,
+}: {
+  profile: Profile;
+  onDelete: (name: string) => void;
+}) {
   return (
-    <Link
-      to={`/profiles/${profile.name}`}
-      state={{ profile }}
-      style={{ textDecoration: 'none' }}
-    >
-      <Card sx={{ maxWidth: 300, margin: 2, cursor: 'pointer', boxShadow: 3 }}>
+    <Card sx={{ maxWidth: 300, margin: 2, cursor: 'pointer', boxShadow: 3 }}>
+      <Link
+        to={`/profiles/${profile.name}`}
+        state={{ profile }}
+        style={{ textDecoration: 'none' }}
+      >
         <img
           src={profile.imgURL}
           alt={profile.name}
@@ -85,20 +91,30 @@ function ProfileCard({ profile }: { profile: Profile }) {
             objectFit: 'cover',
           }}
         />
-        <CardContent>
-          <Typography variant="h6" component="div" gutterBottom>
-            {profile.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {profile.school} | Class of {profile.gradYear}
-          </Typography>
-          <Stack direction="row" spacing={1} justifyContent="center" mt={1}>
-            <Chip label={profile.school} color="primary" />
-            <Chip label={profile.gradYear} color="secondary" />
-          </Stack>
-        </CardContent>
-      </Card>
-    </Link>
+      </Link>
+      <CardContent>
+        <Typography variant="h6" component="div" gutterBottom>
+          {profile.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {profile.school} | Class of {profile.gradYear}
+        </Typography>
+        <Stack direction="row" spacing={1} justifyContent="center" mt={1}>
+          <Chip label={profile.school} color="primary" />
+          <Chip label={profile.gradYear} color="secondary" />
+        </Stack>
+        {/* Delete Button */}
+        <Button
+          variant="outlined"
+          size="small"
+          color="error"
+          onClick={() => onDelete(profile.name)}
+          style={{ marginTop: '7px', marginBottom: '-10px' }}
+        >
+          Delete
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -113,6 +129,12 @@ function Project() {
     setProfiles([...profiles, newProfile]);
   };
 
+  const deleteProfile = (name: string) => {
+    // Filter out the profile with the given name
+    const updatedProfiles = profiles.filter((profile) => profile.name !== name);
+    setProfiles(updatedProfiles);
+  };
+
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
       <Typography variant="h4" gutterBottom>
@@ -122,7 +144,11 @@ function Project() {
         style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}
       >
         {profiles.map((profile) => (
-          <ProfileCard key={profile.name} profile={profile} />
+          <ProfileCard
+            key={profile.name}
+            profile={profile}
+            onDelete={deleteProfile}
+          />
         ))}
       </div>
       <Button
