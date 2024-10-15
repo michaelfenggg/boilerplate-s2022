@@ -21,6 +21,10 @@ const ToxicSchema = new mongoose.Schema({
   traits: {
     type: [String],
     required: true,
+  },
+  image: {
+    type: String,
+    required: true,
   }
 });
 
@@ -29,7 +33,8 @@ interface IToxicUser extends mongoose.Document {
   name: string;
   year: string,
   majors: string,
-  traits: [string]
+  traits: [string],
+  image: string,
 }
 
 const ToxicUser = mongoose.model<IToxicUser>('User', ToxicSchema);

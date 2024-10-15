@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * All the controller functions containing the logic for routes relating to a
  * user's authentication such as login, logout, and registration.
