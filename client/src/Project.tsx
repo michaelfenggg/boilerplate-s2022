@@ -1,11 +1,11 @@
-import React from 'react';
-import { Chip, Stack, Card, CardContent, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Chip, Stack, Card, CardContent, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import MichaelImage from './imgs/MichaelImage.jpg';
 import IzzyImage from './imgs/izzy_pic.jpg';
 import LihiniImage from './imgs/LihiniImage.png';
 import './index.css';
-// import SchoolIcon from '@mui/icons-material/School';
+import AddUserModal from './AddUserModal';
 
 interface Profile {
   name: string;
@@ -16,7 +16,7 @@ interface Profile {
   traitsList: string[];
 }
 
-const profiles: Profile[] = [
+const initialProfiles: Profile[] = [
   {
     name: 'Michael',
     imgURL: MichaelImage,
@@ -96,6 +96,16 @@ function ProfileCard({ profile }: { profile: Profile }) {
 }
 
 function Project() {
+  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const addProfile = (newProfile: Profile) => {
+    setProfiles([...profiles, newProfile]);
+  };
+
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
       <Typography variant="h4" gutterBottom>
@@ -108,22 +118,17 @@ function Project() {
           <ProfileCard key={profile.name} profile={profile} />
         ))}
       </div>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleOpen}
+        style={{ marginTop: '20px' }}
+      >
+        Add User
+      </Button>
+      <AddUserModal open={open} handleClose={handleClose} addProfile={addProfile} />
     </div>
   );
-}
-
-function getProfiles() {
-  return profiles.map((profile, index) => (
-    <div className="profile_card" key="index">
-      <img className="profile_img" alt="profile_image" src={profile.imgURL} />
-      <h3>{profile.name}</h3>
-      <p>{profile.description}</p>
-      <Stack direction="row" spacing={1}>
-        {/* <Chip icon={<SchoolIcon />} label={profile.school} color="info" /> */}
-        <Chip label={profile.gradYear} color="secondary" />
-      </Stack>
-    </div>
-  ));
 }
 
 export default Project;
