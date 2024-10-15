@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import StatusCode from './statusCode';
 
 /**

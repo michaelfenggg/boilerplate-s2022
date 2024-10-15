@@ -5,7 +5,7 @@
  */
 import mongoose from 'mongoose';
 
-const UserSchema = new mongoose.Schema({
+const ToxicSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -21,17 +21,22 @@ const UserSchema = new mongoose.Schema({
   traits: {
     type: [String],
     required: true,
+  },
+  image: {
+    type: String,
+    required: true,
   }
 });
 
-interface IUser extends mongoose.Document {
-  _id: string;
-  name: string;
+interface IToxicUser extends mongoose.Document {
+  _id: string,
+  name: string,
   year: string,
   majors: string,
-  traits: [string]
+  traits: [string],
+  image: string,
 }
 
-const User = mongoose.model<IUser>('User', UserSchema);
+const ToxicUser = mongoose.model<IToxicUser>('User', ToxicSchema);
 
-export { IUser, User };
+export { IToxicUser, ToxicUser };
