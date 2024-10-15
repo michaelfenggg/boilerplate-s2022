@@ -79,6 +79,7 @@ function AddUserModal({ open, handleClose, addProfile }: AddUserModalProps) {
           />
           {traits.map((trait, index) => (
             <TextField
+              // eslint-disable-next-line react/no-array-index-key
               key={index}
               fullWidth
               label={`Trait ${index + 1}`}

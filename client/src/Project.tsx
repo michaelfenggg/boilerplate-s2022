@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Chip, Stack, Card, CardContent, Typography, Button } from '@mui/material';
+import {
+  Chip,
+  Stack,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import MichaelImage from './imgs/MichaelImage.jpg';
 import IzzyImage from './imgs/izzy_pic.jpg';
@@ -126,7 +133,11 @@ function Project() {
       >
         Add User
       </Button>
-      <AddUserModal open={open} handleClose={handleClose} addProfile={addProfile} />
+      <AddUserModal
+        open={open}
+        handleClose={handleClose}
+        addProfile={addProfile}
+      />
     </div>
   );
 }
