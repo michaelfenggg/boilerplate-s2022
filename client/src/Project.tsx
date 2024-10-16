@@ -8,6 +8,7 @@ import {
   Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import MichaelImage from './imgs/MichaelImage.jpg';
 import IzzyImage from './imgs/izzy_pic.jpg';
 import LihiniImage from './imgs/LihiniImage.png';
@@ -22,7 +23,10 @@ interface Profile {
   gradYear: string;
   traitsList: string[];
 }
-
+// want to first create function that gets all users in the database 
+// which will have the user_ids which we can then pass into deleteuser function
+// set the list of initialprofiles to be equal to whatever is returned by the getAllUsers function
+// then the list of initialprofiles will have ids that we can pass into axios
 const initialProfiles: Profile[] = [
   {
     name: 'Michael',
@@ -131,6 +135,8 @@ function Project() {
 
   const deleteProfile = (name: string) => {
     // Filter out the profile with the given name
+    // axios is basically connecting frontend to the backend (specifically routes)
+    // axios.delete(`localhost:3000/Project/${userid}`)
     const updatedProfiles = profiles.filter((profile) => profile.name !== name);
     setProfiles(updatedProfiles);
   };
