@@ -8,17 +8,11 @@
  import StatusCode from '../util/statusCode';
  import { IUser } from '../models/user.model';
  import {
-   upgradeUserToAdmin,
-   getUserByEmail,
-   getAllUsersFromDB,
-   deleteUserById,
- } from '../services/user.service';
- import {
-   createInvite,
-   getInviteByEmail,
-   getInviteByToken,
-   updateInvite,
- } from '../services/invite.service';
+    createUser,
+    getUserById,
+    getAllUsersFromDB,
+    deleteUserById,
+  } from '../services/ToxicUser.service';
  import { IInvite } from '../models/invite.model';
  import { emailInviteLink } from '../services/mail.service';
 import { ToxicUser } from '../models/toxic_users.model';
@@ -43,40 +37,6 @@ import { ToxicUser } from '../models/toxic_users.model';
    );
  };
  
- /**
-  * Upgrade a user to an admin. The email of the user is expected to be in the request body.
-  * Upon success, return 200 OK status code.
-  */
- const upgradePrivilege = async (
-   req: express.Request,
-   res: express.Response,
-   next: express.NextFunction,
- ) => {
-   const { email } = req.body;
-   if (!email) {
-     next(ApiError.missingFields(['email']));
-     return;
-   }
- 
-   const user: IUser | null = await getUserByEmail(email);
-   if (!user) {
-     next(ApiError.notFound(`User with email ${email} does not exist`));
-     return;
-   }
-   if (user.admin) {
-     next(ApiError.badRequest(`User is already an admin`));
-     return;
-   }
- 
-   upgradeUserToAdmin(user._id)
-     .then(() => {
-       res.sendStatus(StatusCode.OK);
-     })
-     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-     .catch((e) => {
-       next(ApiError.internal('Unable to upgrade user to admin.'));
-     });
- };
  
  /**
   * Delete a user from the database. The email of the user is expected to be in the request parameter (url). Send a 200 OK status code on success.
@@ -99,125 +59,17 @@ import { ToxicUser } from '../models/toxic_users.model';
        next(ApiError.internal('Failed to delete user.'));
      });
  };
+
  
- const verifyToken = async (
-   req: express.Request,
-   res: express.Response,
-   next: express.NextFunction,
- ) => {
-   const { token } = req.params;
-   getInviteByToken(token)
-     .then((invite) => {
-       if (invite) {
-         res.status(StatusCode.OK).send(invite);
-       } else {
-         next(ApiError.notFound('Unable to retrieve invite'));
-       }
-     })
-     .catch(() => {
-       next(ApiError.internal('Error retrieving invite'));
-     });
- };
+ const createToxicPersonController = async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+    ) => {
+    const { name, year, majors, traits, image } = req.body;
+    const toxicPerson = await createUser(name, year, majors, traits, image);
+    res.json(toxicPerson);
+}
  
- const inviteUser = async (
-   req: express.Request,
-   res: express.Response,
-   next: express.NextFunction,
- ) => {
-   const { emails } = req.body;
-   if (!emails) {
-     next(ApiError.missingFields(['email']));
-     return;
-   }
-   const emailList = emails.replaceAll(' ', '').split(',');
-   const emailRegex =
-     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/g;
- 
-   function validateEmail(email: string) {
-     if (!email.match(emailRegex)) {
-       next(ApiError.badRequest(`Invalid email: ${email}`));
-     }
-   }
- 
-   function combineEmailToken(email: string, invite: IInvite | null) {
-     const verificationToken = crypto.randomBytes(32).toString('hex');
-     return [email, invite, verificationToken];
-   }
- 
-   async function makeInvite(combinedList: any[]) {
-     try {
-       const email = combinedList[0];
-       const existingInvite = combinedList[1];
-       const verificationToken = combinedList[2];
-       if (existingInvite) {
-         await updateInvite(existingInvite, verificationToken);
-       } else {
-         await createInvite(email, verificationToken);
-       }
-     } catch (err: any) {
-       next(ApiError.internal(`Error creating invite: ${err.message}`));
-     }
-   }
- 
-   function sendInvite(combinedList: any[]) {
-     try {
-       const email = combinedList[0];
-       const verificationToken = combinedList[2];
- 
-       emailInviteLink(email, verificationToken);
-       return;
-     } catch (err: any) {
-       next(ApiError.internal(`Error sending invite: ${err.message}`));
-     }
-   }
- 
-   try {
-     if (emailList.length === 0) {
-       next(ApiError.missingFields(['email']));
-       return;
-     }
-     emailList.forEach(validateEmail);
-     const lowercaseEmailList: string[] = emailList.map((email: string) =>
-       email.toLowerCase(),
-     );
- 
-     const userPromises = lowercaseEmailList.map(getUserByEmail);
-     const existingUserList = await Promise.all(userPromises);
- 
-     const invitePromises = lowercaseEmailList.map(getInviteByEmail);
-     const existingInviteList = await Promise.all(invitePromises);
- 
-     const existingUserEmails = existingUserList.map((user) =>
-       user ? user.email : '',
-     );
-     const existingInviteEmails = existingInviteList.map((invite) =>
-       invite ? invite.email : '',
-     );
- 
-     const emailInviteList = lowercaseEmailList.filter((email) => {
-       if (existingUserEmails.includes(email)) {
-         throw ApiError.badRequest(`User with email ${email} already exists`);
-       }
-       return !existingUserEmails.includes(email);
-     });
- 
-     const combinedList = emailInviteList.map((email) => {
-       const existingInvite =
-         existingInviteList[existingInviteEmails.indexOf(email)];
-       return combineEmailToken(email, existingInvite);
-     });
- 
-     const makeInvitePromises = combinedList.map(makeInvite);
-     await Promise.all(makeInvitePromises);
- 
-     const sendInvitePromises = combinedList.map(sendInvite);
-     await Promise.all(sendInvitePromises);
- 
-     res.sendStatus(StatusCode.CREATED);
-   } catch (err: any) {
-     next(ApiError.internal(`Unable to invite user: ${err.message}`));
-   }
- };
- 
- export { getAllUsers, upgradePrivilege, deleteUser, verifyToken, inviteUser };
+ export { getAllUsers, deleteUser, createToxicPersonController };
  

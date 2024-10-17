@@ -14,7 +14,7 @@ import IzzyImage from './imgs/izzy_pic.jpg';
 import LihiniImage from './imgs/LihiniImage.png';
 import './index.css';
 import AddUserModal from './AddUserModal';
-
+     
 interface Profile {
   name: string;
   imgURL: string;
@@ -27,57 +27,58 @@ interface Profile {
 // which will have the user_ids which we can then pass into deleteuser function
 // set the list of initialprofiles to be equal to whatever is returned by the getAllUsers function
 // then the list of initialprofiles will have ids that we can pass into axios
-const initialProfiles: Profile[] = [
-  {
-    name: 'Michael',
-    imgURL: MichaelImage,
-    description: "Michael's toxic traits",
-    school: 'SEAS/Wharton',
-    gradYear: '2028',
-    traitsList: [
-      'will eat more than half your food if you split it with me!',
-      'might fuck up your hair if you come for a haircut',
-      "be a bitch when i'm hungry",
-      'will not put things in my calendar',
-      'will not wake up before 12pm',
-    ],
-  },
-  {
-    name: 'Izzy',
-    imgURL: IzzyImage,
-    description: "Izzy's toxic traits",
-    school: 'SEAS',
-    gradYear: '2027',
-    traitsList: [
-      'is allergic to everything',
-      'will fall asleep when watching movies',
-      'enjoys climbing like all engineering majors',
-      "doesn't have music taste",
-      "can't remember birthdays",
-    ],
-  },
-  {
-    name: 'Lihini',
-    imgURL: LihiniImage,
-    description: "Lihini's toxic traits",
-    school: 'SEAS',
-    gradYear: '2028',
-    traitsList: [
-      'split ends',
-      'actually enjoys bojack horseman',
-      'closeted celiac',
-      'in an improv group',
-      'always cold',
-    ],
-  },
-];
+
+// const initialProfiles: Profile[] = [
+//   {
+//     name: 'Michael',
+//     imgURL: MichaelImage,
+//     description: "Michael's toxic traits",
+//     school: 'SEAS/Wharton',
+//     gradYear: '2028',
+//     traitsList: [
+//       'will eat more than half your food if you split it with me!',
+//       'might fuck up your hair if you come for a haircut',
+//       "be a bitch when i'm hungry",
+//       'will not put things in my calendar',
+//       'will not wake up before 12pm',
+//     ],
+//   },
+//   {
+//     name: 'Izzy',
+//     imgURL: IzzyImage,
+//     description: "Izzy's toxic traits",
+//     school: 'SEAS',
+//     gradYear: '2027',
+//     traitsList: [
+//       'is allergic to everything',
+//       'will fall asleep when watching movies',
+//       'enjoys climbing like all engineering majors',
+//       "doesn't have music taste",
+//       "can't remember birthdays",
+//     ],
+//   },
+//   {
+//     name: 'Lihini',
+//     imgURL: LihiniImage,
+//     description: "Lihini's toxic traits",
+//     school: 'SEAS',
+//     gradYear: '2028',
+//     traitsList: [
+//       'split ends',
+//       'actually enjoys bojack horseman',
+//       'closeted celiac',
+//       'in an improv group',
+//       'always cold',
+//     ],
+//   },
+// ];
 
 function ProfileCard({
   profile,
-  onDelete,
+  //onDelete,
 }: {
   profile: Profile;
-  onDelete: (name: string) => void;
+  // onDelete: (name: string) => void;
 }) {
   return (
     <Card sx={{ maxWidth: 300, margin: 2, cursor: 'pointer', boxShadow: 3 }}>
@@ -112,7 +113,7 @@ function ProfileCard({
           variant="outlined"
           size="small"
           color="error"
-          onClick={() => onDelete(profile.name)}
+          // onClick={() => onDelete(profile.name)}
           style={{ marginTop: '7px', marginBottom: '-10px' }}
         >
           Delete
@@ -123,23 +124,45 @@ function ProfileCard({
 }
 
 function Project() {
-  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles);
-  const [open, setOpen] = useState(false);
+
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [open, setOpen] = useState(false);  
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/project/all');
+      const jsonData = await response.json();
+      setProfiles(jsonData);
+    } catch (error) {
+      console.error('There was an error fetching the data:', error);
+    }
+  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const addProfile = (newProfile: Profile) => {
-    setProfiles([...profiles, newProfile]);
+  const addProfile = async (newProfile: Profile) => {
+    await fetch('http://localhost:4000/api/toxicPerson/createPerson', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newProfile),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
-  const deleteProfile = (name: string) => {
-    // Filter out the profile with the given name
-    // axios is basically connecting frontend to the backend (specifically routes)
-    // axios.delete(`localhost:3000/Project/${userid}`)
-    const updatedProfiles = profiles.filter((profile) => profile.name !== name);
-    setProfiles(updatedProfiles);
-  };
+  // const deleteProfile = (name: string) => {
+  //   // Filter out the profile with the given name
+  //   // axios is basically connecting frontend to the backend (specifically routes)
+  //   // axios.delete(`localhost:3000/Project/${userid}`)
+  //   const updatedProfiles = profiles.filter((profile) => profile.name !== name);
+  //   setProfiles(updatedProfiles);
+  // };
 
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
@@ -153,7 +176,7 @@ function Project() {
           <ProfileCard
             key={profile.name}
             profile={profile}
-            onDelete={deleteProfile}
+            // onDelete={deleteProfile}
           />
         ))}
       </div>
@@ -172,6 +195,6 @@ function Project() {
       />
     </div>
   );
-}
+};
 
 export default Project;
