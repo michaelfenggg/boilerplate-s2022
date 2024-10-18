@@ -8,23 +8,23 @@ import mongoose from 'mongoose';
 const ToxicSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   year: {
     type: String,
-    required: true,
+    required: false,
   },
   majors: {
     type: String,
-    required: true,
+    required: false,
   },
   traits: {
     type: [String],
-    required: true,
+    required: false,
   },
   image: {
     type: String,
-    required: true,
+    required: false,
   }
 });
 
@@ -37,6 +37,6 @@ interface IToxicUser extends mongoose.Document {
   image: string,
 }
 
-const ToxicUser = mongoose.model<IToxicUser>('User', ToxicSchema);
+const ToxicUser = mongoose.model<IToxicUser>('ToxicUser', ToxicSchema);
 
 export { IToxicUser, ToxicUser };

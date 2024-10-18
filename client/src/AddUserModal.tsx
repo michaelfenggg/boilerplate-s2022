@@ -24,7 +24,7 @@ function AddUserModal({ open, handleClose, addProfile }: AddUserModalProps) {
   const [school, setSchool] = useState('');
   const [gradYear, setGradYear] = useState('');
   const [traits, setTraits] = useState<string[]>(['', '', '', '', '']);
-  const [image, setImage] = useState<File | null>(null);
+  const [imgURL, setImgURL] = useState('');
 
   const handleTraitChange = (index: number, value: string) => {
     const newTraits = [...traits];
@@ -36,7 +36,7 @@ function AddUserModal({ open, handleClose, addProfile }: AddUserModalProps) {
     e.preventDefault();
     const newProfile: Profile = {
       name,
-      imgURL: image ? URL.createObjectURL(image) : '',
+      imgURL,
       description: `${name}'s toxic traits`,
       school,
       gradYear,
@@ -89,11 +89,13 @@ function AddUserModal({ open, handleClose, addProfile }: AddUserModalProps) {
               required
             />
           ))}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files?.[0] || null)}
-            style={{ margin: '10px 0' }}
+          <TextField
+            fullWidth
+            label="Image URL"
+            value={imgURL}
+            onChange={(e) => setImgURL(e.target.value)}
+            margin="normal"
+            required
           />
           <Button type="submit" variant="contained" color="primary">
             Add User

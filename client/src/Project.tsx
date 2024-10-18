@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Chip,
   Stack,
@@ -14,7 +14,7 @@ import IzzyImage from './imgs/izzy_pic.jpg';
 import LihiniImage from './imgs/LihiniImage.png';
 import './index.css';
 import AddUserModal from './AddUserModal';
-     
+
 interface Profile {
   name: string;
   imgURL: string;
@@ -23,7 +23,7 @@ interface Profile {
   gradYear: string;
   traitsList: string[];
 }
-// want to first create function that gets all users in the database 
+// want to first create function that gets all users in the database
 // which will have the user_ids which we can then pass into deleteuser function
 // set the list of initialprofiles to be equal to whatever is returned by the getAllUsers function
 // then the list of initialprofiles will have ids that we can pass into axios
@@ -72,14 +72,9 @@ interface Profile {
 //     ],
 //   },
 // ];
+// we want onDelete in profilecard after profile, and onDelete: (name: string) => void; after the profile: Profile
 
-function ProfileCard({
-  profile,
-  //onDelete,
-}: {
-  profile: Profile;
-  // onDelete: (name: string) => void;
-}) {
+function ProfileCard({ profile }: { profile: Profile }) {
   return (
     <Card sx={{ maxWidth: 300, margin: 2, cursor: 'pointer', boxShadow: 3 }}>
       <Link
@@ -124,19 +119,25 @@ function ProfileCard({
 }
 
 function Project() {
-
   const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [open, setOpen] = useState(false);  
-
+  const [open, setOpen] = useState(false);
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:3000/project/all');
+      const response = await fetch('http://localhost:4000/api/toxicPerson/all');
+      console.log('response');
+      console.log(response);
       const jsonData = await response.json();
+      console.log('jsonData');
+      console.log(jsonData);
       setProfiles(jsonData);
     } catch (error) {
       console.error('There was an error fetching the data:', error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -195,6 +196,6 @@ function Project() {
       />
     </div>
   );
-};
+}
 
 export default Project;
