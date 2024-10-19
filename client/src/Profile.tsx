@@ -24,14 +24,10 @@ interface ProfileData {
   name: string;
   imgURL: string;
   description: string;
+  school: string;
+  gradYear: string;
   traitsList: string[];
 }
-
-const imageMap: { [key: string]: string } = {
-  Michael: michaelPic,
-  Izzy: izzyPic,
-  Lihini: lihiniPic,
-};
 
 export default function MediaControlCard() {
   const theme = useTheme();
