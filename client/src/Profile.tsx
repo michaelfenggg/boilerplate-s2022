@@ -39,7 +39,7 @@ export default function MediaControlCard() {
   const { profile }: { profile: ProfileData } = location.state;
   const [currentTrait, setCurrentTraitIndex] = useState(0);
   const traits = profile.traitsList;
-  const pic = imageMap[profile.name];
+  const pic = profile.imgURL;
 
   const nextTrait = () => {
     setCurrentTraitIndex((prevIndex) => (prevIndex + 1) % traits.length);

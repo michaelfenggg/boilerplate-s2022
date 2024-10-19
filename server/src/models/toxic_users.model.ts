@@ -6,35 +6,40 @@
 import mongoose from 'mongoose';
 
 const ToxicSchema = new mongoose.Schema({
+  description: {
+    type: String,
+    required: false,
+  },
+  gradYear: {
+    type: String,
+    required: false,
+  },
+  imgURL: {
+    type: String,
+    required: false,
+  },
   name: {
     type: String,
     required: false,
   },
-  year: {
+  school: {
     type: String,
     required: false,
   },
-  majors: {
-    type: String,
-    required: false,
-  },
-  traits: {
+  traitsList: {
     type: [String],
     required: false,
   },
-  image: {
-    type: String,
-    required: false,
-  }
 });
 
 interface IToxicUser extends mongoose.Document {
   _id: string;
-  name: string;
-  year: string,
-  majors: string,
-  traits: [string],
-  image: string,
+  description: string;
+  gradYear: string,
+  imgURL: string,
+  name: string,
+  school: string,
+  traitsList: [string],
 }
 
 const ToxicUser = mongoose.model<IToxicUser>('ToxicUser', ToxicSchema);

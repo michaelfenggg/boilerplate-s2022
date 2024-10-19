@@ -70,8 +70,8 @@ import { ToxicUser } from '../models/toxic_users.model';
     res: express.Response,
     next: express.NextFunction,
     ) => {
-    const { name, year, majors, traits, image } = req.body;
-    const toxicPerson = await createUser(name, year, majors, traits, image);
+    const { description, gradYear, imgURL, name, school, traitsList } = req.body;
+    const toxicPerson = await createUser(description, gradYear, imgURL, name, school, traitsList);
     res.json(toxicPerson);
 }
  

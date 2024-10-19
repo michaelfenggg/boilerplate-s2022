@@ -76,6 +76,25 @@ interface Profile {
 // we want onDelete in profilecard after profile, and onDelete: (name: string) => void; after the profile: Profile
 
 function ProfileCard({ profile, onDelete }: { profile: Profile; onDelete: (id: string) => void }) {
+  const getImageSrc = (imgURL?: string) => {
+    console.log(imgURL);
+    if (!imgURL) {
+      console.log("no imgurl");
+      return MichaelImage;
+    }
+    if (imgURL.startsWith('http') || imgURL.startsWith('https')) {
+      console.log("imgurl starts with http or https!");
+      return imgURL;
+    }
+    try {
+      console.log("trying cuz it didn't work :(");
+      return require(`./imgs/${imgURL}`).default;
+    } catch {
+      console.log("catching cuz it didn't work again :(");
+      return MichaelImage;
+    }
+  };
+  
   return (
     <Card sx={{ maxWidth: 300, margin: 2, cursor: 'pointer', boxShadow: 3 }}>
       <Link
@@ -84,7 +103,7 @@ function ProfileCard({ profile, onDelete }: { profile: Profile; onDelete: (id: s
         style={{ textDecoration: 'none' }}
       >
         <img
-          src={profile.imgURL}
+          src={getImageSrc(profile.imgURL)}
           alt={profile.name}
           style={{
             width: '100%',
@@ -149,6 +168,7 @@ function Project() {
   };
 
   const addProfile = async (newProfile: Profile) => {
+    console.log(newProfile);
     await fetch('http://localhost:4000/api/toxicPerson/createPerson', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

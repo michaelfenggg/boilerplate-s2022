@@ -13,18 +13,20 @@
   * @returns The created {@link ToxicUser}
   */
  const createUser = async (
+   description: string,
+   gradYear: string,
+   imgURL: string,
    name: string,
-   year: string,
-   majors: string,
-   traits: string,
-   image: string
+   school: string,
+   traitsList: string[],
  ) => {
    const newUser = new ToxicUser({
+     description,
+     gradYear,
+     imgURL,
      name,
-     year,
-     majors,
-     traits,
-     image,
+     school,
+     traitsList,
    });
    const user = await newUser.save();
    return user;
