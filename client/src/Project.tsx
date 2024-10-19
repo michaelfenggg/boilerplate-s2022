@@ -14,6 +14,7 @@ import IzzyImage from './imgs/izzy_pic.jpg';
 import LihiniImage from './imgs/LihiniImage.png';
 import './index.css';
 import AddUserModal from './AddUserModal';
+import { useNavigate } from 'react-router-dom';
 
 interface Profile {
   name: string;
@@ -74,7 +75,7 @@ interface Profile {
 // ];
 // we want onDelete in profilecard after profile, and onDelete: (name: string) => void; after the profile: Profile
 
-function ProfileCard({ profile }: { profile: Profile }) {
+function ProfileCard({ profile, onDelete }: { profile: Profile; onDelete: (id: string) => void }) {
   return (
     <Card sx={{ maxWidth: 300, margin: 2, cursor: 'pointer', boxShadow: 3 }}>
       <Link
@@ -108,7 +109,7 @@ function ProfileCard({ profile }: { profile: Profile }) {
           variant="outlined"
           size="small"
           color="error"
-          // onClick={() => onDelete(profile.name)}
+          onClick={() => onDelete(profile.name)}
           style={{ marginTop: '7px', marginBottom: '-10px' }}
         >
           Delete
@@ -141,6 +142,11 @@ function Project() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const navigate = useNavigate();
+
+  const handleProfileClick = (profile: Profile) => {
+    navigate('/profile', { state: { profile } });
+  };
 
   const addProfile = async (newProfile: Profile) => {
     await fetch('http://localhost:4000/api/toxicPerson/createPerson', {
@@ -156,6 +162,23 @@ function Project() {
         console.error('Error:', error);
       });
   };
+
+  async function deleteProfile(name: string): Promise<void> {
+    try {
+      const response = await fetch(`http://localhost:4000/api/toxicPerson/deletePerson/${name}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete profile');
+      }
+
+      console.log('Profile deleted successfully');
+      await fetchData(); // Refresh the list after deletion
+    } catch (error) {
+      console.error('Error deleting profile:', error);
+    }
+  }
 
   // const deleteProfile = (name: string) => {
   //   // Filter out the profile with the given name
@@ -176,8 +199,8 @@ function Project() {
         {profiles.map((profile) => (
           <ProfileCard
             key={profile.name}
+            onDelete={deleteProfile}
             profile={profile}
-            // onDelete={deleteProfile}
           />
         ))}
       </div>

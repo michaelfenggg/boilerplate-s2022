@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get('/all', getAllUsers);
 router.post('/createPerson', createToxicPersonController);
-router.delete('/deletePerson', deleteUser);
+router.delete('/deletePerson/:name', deleteUser);
 
 export default router;

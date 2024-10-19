@@ -11,7 +11,7 @@
     createUser,
     getUserById,
     getAllUsersFromDB,
-    deleteUserById,
+    deleteUserByName,
   } from '../services/ToxicUser.service';
  import { IInvite } from '../models/invite.model';
  import { emailInviteLink } from '../services/mail.service';
@@ -42,23 +42,27 @@ import { ToxicUser } from '../models/toxic_users.model';
   * Delete a user from the database. The email of the user is expected to be in the request parameter (url). Send a 200 OK status code on success.
   */
  const deleteUser = async (
-   req: express.Request,
-   res: express.Response,
-   next: express.NextFunction
- ) => {
-   const { id } = req.params;
-   if (!id) {
-     next(ApiError.missingFields(['id']));
-     return;
-   }
-   
-   deleteUserById(id)
-     .then(() => res.sendStatus(StatusCode.OK))
-     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-     .catch((e) => {
-       next(ApiError.internal('Failed to delete user.'));
-     });
- };
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const { name } = req.params;
+  if (!name) {
+    next(ApiError.missingFields(['name']));
+    return;
+  }
+  
+  try {
+    const result = await deleteUserByName(name);
+    if (result.deletedCount > 0) {
+      res.sendStatus(StatusCode.OK);
+    } else {
+      next(ApiError.notFound(`User with name ${name} not found`));
+    }
+  } catch (e) {
+    next(ApiError.internal('Failed to delete user.'));
+  }
+};
 
  
  const createToxicPersonController = async (

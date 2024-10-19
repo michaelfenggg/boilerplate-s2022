@@ -66,15 +66,15 @@
   * @param id The id of the user to delete.
   * @returns The deleted {@link ToxicUser}
   */
- const deleteUserById = async (id: string) => {
-   const user = await ToxicUser.findByIdAndDelete(id).exec();
-   return user;
+ const deleteUserByName = async (name: string) => {
+  const result = await ToxicUser.deleteMany({ name }).exec();
+  return result;
  };
  
  export {
    createUser,
    getUserById,
    getAllUsersFromDB,
-   deleteUserById,
+   deleteUserByName,
  };
  
